@@ -1,0 +1,242 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Finance Navigator – Interactive Graphs</title>
+    <link rel="stylesheet" href="style.css">
+    <!-- Include Chart.js via CDN -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <style>
+        /* Simple styling for the control panel */
+        .chart-container {
+            background-color: #ffffff;
+            padding: 1rem 1.5rem;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+            margin-bottom: 2rem;
+        }
+        .controls {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 1rem;
+            margin-top: 1rem;
+        }
+        .controls label {
+            font-weight: bold;
+        }
+        .controls input[type="range"] {
+            width: 150px;
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <h1>Finance Navigator</h1>
+        <nav>
+            <ul>
+                <li><a href="index.html">Home</a></li>
+                <li><a href="economics.html">Economics</a></li>
+                <li><a href="investing.html">Investing</a></li>
+                <li><a href="personal_finance.html">Personal Finance</a></li>
+                <li><a href="resources.html">Student Resources</a></li>
+                <li><a href="examples.html">Case Studies</a></li>
+                <li><a href="scenarios.html">Scenarios</a></li>
+                <li><a href="tools.html">Tools</a></li>
+                <li><a href="interactive.html">Interactive Graphs</a></li>
+                <li><a href="about.html">About</a></li>
+            </ul>
+        </nav>
+    </header>
+    <main>
+        <section>
+            <h2>Interactive Supply & Demand</h2>
+            <p>Use the sliders to shift the supply and demand curves. The chart updates automatically to show how shifts affect equilibrium price and quantity.</p>
+            <div class="chart-container">
+                <canvas id="supplyDemandChart"></canvas>
+                <div class="controls">
+                    <div>
+                        <label for="demandShift">Demand Shift:</label>
+                        <input type="range" id="demandShift" min="-5" max="5" step="0.5" value="0">
+                    </div>
+                    <div>
+                        <label for="supplyShift">Supply Shift:</label>
+                        <input type="range" id="supplyShift" min="-5" max="5" step="0.5" value="0">
+                    </div>
+                </div>
+            </div>
+        </section>
+        <section>
+            <h2>Interactive Compound Growth</h2>
+            <p>Explore how principal, interest rate and time horizon influence the growth of your investment. Adjust the inputs and watch the growth curve update.</p>
+            <div class="chart-container">
+                <canvas id="compoundChart"></canvas>
+                <div class="controls">
+                    <div>
+                        <label for="principalInput">Principal ($):</label>
+                        <input type="number" id="principalInput" value="1000" min="0" step="100">
+                    </div>
+                    <div>
+                        <label for="rateInput">Annual Rate (%):</label>
+                        <input type="number" id="rateInput" value="5" min="0" max="15" step="0.5">
+                    </div>
+                    <div>
+                        <label for="yearsInput">Years:</label>
+                        <input type="number" id="yearsInput" value="10" min="1" max="50" step="1">
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+    <footer>
+        <p>&copy; 2026 Finance Navigator. All rights reserved.</p>
+    </footer>
+    <!-- Chart initialization script -->
+    <script>
+        // Supply and Demand Chart
+        const sdCtx = document.getElementById('supplyDemandChart').getContext('2d');
+        let sdChart;
+        function generateSupplyDemandData(demandShift, supplyShift) {
+            const quantities = [];
+            const demandPrices = [];
+            const supplyPrices = [];
+            for (let q = 0; q <= 10; q += 0.5) {
+                quantities.push(q);
+                // Demand line: downward sloping. Base intercept 15 minus slope*qty plus shift.
+                const demandPrice = (15 + parseFloat(demandShift)) - 1.0 * q;
+                demandPrices.push(demandPrice);
+                // Supply line: upward sloping. Base intercept 2 plus slope*qty plus shift.
+                const supplyPrice = (2 + parseFloat(supplyShift)) + 0.8 * q;
+                supplyPrices.push(supplyPrice);
+            }
+            return { quantities, demandPrices, supplyPrices };
+        }
+        function updateSupplyDemandChart() {
+            const demandShift = document.getElementById('demandShift').value;
+            const supplyShift = document.getElementById('supplyShift').value;
+            const data = generateSupplyDemandData(demandShift, supplyShift);
+            if (sdChart) {
+                sdChart.data.labels = data.quantities;
+                sdChart.data.datasets[0].data = data.demandPrices;
+                sdChart.data.datasets[1].data = data.supplyPrices;
+                sdChart.update();
+            } else {
+                sdChart = new Chart(sdCtx, {
+                    type: 'line',
+                    data: {
+                        labels: data.quantities,
+                        datasets: [
+                            {
+                                label: 'Demand',
+                                data: data.demandPrices,
+                                borderColor: 'rgba(75, 192, 192, 1)',
+                                fill: false
+                            },
+                            {
+                                label: 'Supply',
+                                data: data.supplyPrices,
+                                borderColor: 'rgba(255, 99, 132, 1)',
+                                fill: false
+                            }
+                        ]
+                    },
+                    options: {
+                        responsive: true,
+                        scales: {
+                            x: {
+                                title: {
+                                    display: true,
+                                    text: 'Quantity'
+                                }
+                            },
+                            y: {
+                                title: {
+                                    display: true,
+                                    text: 'Price'
+                                }
+                            }
+                        }
+                    }
+                });
+            }
+        }
+        // Initialize and attach event listeners
+        document.getElementById('demandShift').addEventListener('input', updateSupplyDemandChart);
+        document.getElementById('supplyShift').addEventListener('input', updateSupplyDemandChart);
+        updateSupplyDemandChart();
+
+        // Compound Growth Chart
+        const cgCtx = document.getElementById('compoundChart').getContext('2d');
+        let cgChart;
+        function generateCompoundData(principal, rate, years) {
+            const labels = [];
+            const values = [];
+            const annualRate = parseFloat(rate) / 100;
+            let balance = parseFloat(principal);
+            for (let year = 0; year <= years; year++) {
+                labels.push(year.toString());
+                values.push(balance.toFixed(2));
+                balance = balance * (1 + annualRate);
+            }
+            return { labels, values };
+        }
+        function updateCompoundChart() {
+            const principal = document.getElementById('principalInput').value;
+            const rate = document.getElementById('rateInput').value;
+            const years = document.getElementById('yearsInput').value;
+            const data = generateCompoundData(principal, rate, years);
+            if (cgChart) {
+                cgChart.data.labels = data.labels;
+                cgChart.data.datasets[0].data = data.values;
+                cgChart.update();
+            } else {
+                cgChart = new Chart(cgCtx, {
+                    type: 'line',
+                    data: {
+                        labels: data.labels,
+                        datasets: [
+                            {
+                                label: 'Investment Value',
+                                data: data.values,
+                                borderColor: 'rgba(54, 162, 235, 1)',
+                                fill: false
+                            }
+                        ]
+                    },
+                    options: {
+                        responsive: true,
+                        scales: {
+                            x: {
+                                title: {
+                                    display: true,
+                                    text: 'Years'
+                                }
+                            },
+                            y: {
+                                title: {
+                                    display: true,
+                                    text: 'Value ($)'
+                                }
+                            }
+                        }
+                    }
+                });
+            }
+        }
+        document.getElementById('principalInput').addEventListener('input', updateCompoundChart);
+        document.getElementById('rateInput').addEventListener('input', updateCompoundChart);
+        document.getElementById('yearsInput').addEventListener('input', updateCompoundChart);
+        updateCompoundChart();
+    </script>
+    <!-- Google Analytics placeholder. Replace YOUR_MEASUREMENT_ID with your property ID. -->
+    <!--
+    <script async src="https://www.googletagmanager.com/gtag/js?id=YOUR_MEASUREMENT_ID"></script>
+    <script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('js', new Date());
+      gtag('config', 'YOUR_MEASUREMENT_ID');
+    </script>
+    -->
+</body>
+</html>
