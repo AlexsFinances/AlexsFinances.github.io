@@ -1,0 +1,182 @@
+/*
+ * Stylesheet for the Finance Explorer website.
+ *
+ * The design uses a clean, modern aesthetic with a dark blue header and
+ * footer complemented by warm gold accent colours. Content areas sit on a
+ * soft light background to enhance readability. The layout is responsive,
+ * adjusting gracefully on small screens.
+ */
+
+body {
+    font-family: Arial, Helvetica, sans-serif;
+    margin: 0;
+    padding: 0;
+    background-color: #f7f9fc;
+    color: #2c3e50;
+    line-height: 1.6;
+}
+
+header {
+    background-color: #25316d;
+    color: #ffffff;
+    padding: 1rem 1.5rem;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-wrap: wrap;
+}
+
+header h1 {
+    margin: 0;
+    font-size: 1.8rem;
+    letter-spacing: 1px;
+}
+
+nav ul {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    gap: 1rem;
+    flex-wrap: wrap;
+}
+
+nav a {
+    color: #f5c400;
+    text-decoration: none;
+    font-weight: bold;
+    transition: color 0.2s ease;
+}
+
+nav a:hover {
+    text-decoration: underline;
+    color: #ffe680;
+}
+
+main {
+    padding: 2rem 1.5rem;
+    max-width: 1000px;
+    margin: 0 auto;
+}
+
+section {
+    margin-bottom: 2rem;
+}
+
+section h2 {
+    color: #25316d;
+    margin-top: 0;
+    border-bottom: 2px solid #e1e7f0;
+    padding-bottom: 0.5rem;
+}
+
+section h3 {
+    color: #25316d;
+    margin-top: 1.2rem;
+}
+
+article {
+    background-color: #ffffff;
+    padding: 1rem 1.5rem;
+    border-radius: 8px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    margin-bottom: 1.5rem;
+}
+
+article h3 {
+    margin-top: 0;
+}
+
+footer {
+    background-color: #25316d;
+    color: #ffffff;
+    text-align: center;
+    padding: 1rem 1.5rem;
+    margin-top: 3rem;
+}
+
+.tool {
+    background-color: #ffffff;
+    padding: 1rem 1.5rem;
+    margin-bottom: 2rem;
+    border-radius: 8px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.tool h3 {
+    color: #25316d;
+    margin-top: 0;
+}
+
+.tool label {
+    display: block;
+    margin-top: 0.5rem;
+    font-weight: bold;
+}
+
+.tool input {
+    width: 100%;
+    padding: 0.5rem;
+    margin-top: 0.25rem;
+    border: 1px solid #cccccc;
+    border-radius: 4px;
+    box-sizing: border-box;
+}
+
+.tool button {
+    margin-top: 0.75rem;
+    padding: 0.5rem 1rem;
+    background-color: #14a98b;
+    color: #ffffff;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    font-weight: bold;
+    transition: background-color 0.2s ease;
+}
+
+.tool button:hover {
+    background-color: #0f846e;
+}
+
+/* Figure styling for images */
+figure {
+    margin: 1rem 0;
+    text-align: center;
+}
+
+figure img {
+    max-width: 100%;
+    height: auto;
+    border-radius: 4px;
+}
+
+figcaption {
+    font-size: 0.9rem;
+    color: #666666;
+    margin-top: 0.5rem;
+}
+
+#topic-content {
+    margin-top: 1rem;
+    background-color: #ffffff;
+    padding: 1rem 1.5rem;
+    border-radius: 8px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    color: #2c3e50;
+}
+
+/* Responsive adjustments */
+@media (max-width: 700px) {
+    nav ul {
+        flex-direction: column;
+        gap: 0.5rem;
+    }
+    header {
+        flex-direction: column;
+        align-items: flex-start;
+    }
+    header h1 {
+        margin-bottom: 0.5rem;
+    }
+}
